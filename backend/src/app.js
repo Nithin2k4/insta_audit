@@ -13,29 +13,17 @@ const reportsRoutes = require('./routes/reports');
 const app = express();
 
 // Security middleware
-app.use(helmet());
-app.use(cors({
-  origin: (origin, callback) => {
-    const allowed = [
-      process.env.FRONTEND_URL,
-      'http://localhost:5173',
-      'http://localhost:3000',
-    ].filter(Boolean);
-    // Allow Codespaces, Gitpod, Vercel, and any github.dev URLs
-    if (!origin || allowed.includes(origin) ||
-        origin.endsWith('.app.github.dev') ||
-        origin.endsWith('.preview.app.github.dev') ||
-        origin.endsWith('.vercel.app') ||
-        origin.endsWith('.gitpod.io')) {
-      callback(null, true);
-    } else {
-      callback(null, true); // Allow all for now during development
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-}));
+app.use(helmet({ crossOriginResourcePolicy: false }));
+
+// Allow all origins during development
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.headers.origin || '*');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  if (req.method === 'OPTIONS') return res.sendStatus(200);
+  next();
+});
 
 // Cookie parsing
 app.use(cookieParser());
