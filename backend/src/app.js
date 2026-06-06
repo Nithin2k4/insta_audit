@@ -14,7 +14,23 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: (origin, callback) => {
+    const allowed = [
+      process.env.FRONTEND_URL,
+      'http://localhost:5173',
+      'http://localhost:3000',
+    ].filter(Boolean);
+    // Allow Codespaces, Gitpod, Vercel, and any github.dev URLs
+    if (!origin || allowed.includes(origin) ||
+        origin.endsWith('.app.github.dev') ||
+        origin.endsWith('.preview.app.github.dev') ||
+        origin.endsWith('.vercel.app') ||
+        origin.endsWith('.gitpod.io')) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow all for now during development
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
