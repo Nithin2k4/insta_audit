@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 const { generalLimiter } = require('./middleware/rateLimiter');
 
 const authRoutes = require('./routes/auth');
@@ -35,6 +36,9 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
+
+// Cookie parsing
+app.use(cookieParser());
 
 // Logging
 app.use(morgan('dev'));

@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Download, FileText, Table } from 'lucide-react';
 import { useAccounts } from '../hooks/useAccounts';
+import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { format, subDays } from 'date-fns';
 
 export default function Reports() {
   const { accounts, loading } = useAccounts();
+  const { getAccessToken } = useAuth();
   const [accountId, setAccountId] = useState('');
   const [from, setFrom] = useState(format(subDays(new Date(), 30), 'yyyy-MM-dd'));
   const [to, setTo] = useState(format(new Date(), 'yyyy-MM-dd'));
@@ -25,15 +27,14 @@ export default function Reports() {
 
     try {
       const params = new URLSearchParams({ accountId, from, to, format: exportFormat });
-      const token = document.cookie; // Access token managed in context; we rely on withCredentials
+      const token = getAccessToken();
 
-      // Use fetch for file download
       const res = await fetch(
         `${import.meta.env.VITE_API_URL || '/api'}/reports/export?${params}`,
         {
           credentials: 'include',
           headers: {
-            // The access token interceptor doesn't apply here; get from window.__access_token if needed
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
           },
         }
       );
