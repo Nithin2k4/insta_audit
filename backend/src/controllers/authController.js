@@ -49,7 +49,7 @@ async function register(req, res) {
     sendWelcomeEmail(user.email, user.name).catch(() => {});
 
     res.status(201).json({
-      user: { id: user.id, email: user.email, name: user.name },
+      user: { id: user.id, email: user.email, name: user.name, avatar_url: null },
       accessToken,
     });
   } catch (error) {
@@ -128,7 +128,7 @@ async function refresh(req, res) {
 async function getMe(req, res) {
   try {
     const result = await query(
-      'SELECT id, email, name, avatar_url, created_at FROM users WHERE id = $1',
+      'SELECT id, email, name, avatar_url, google_id, created_at FROM users WHERE id = $1',
       [req.user.id]
     );
     if (result.rows.length === 0) {

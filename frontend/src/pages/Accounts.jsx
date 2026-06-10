@@ -1,11 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, RefreshCw, Instagram } from 'lucide-react';
 import { useAccounts } from '../hooks/useAccounts';
 import AccountCard from '../components/AccountCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import api from '../utils/api';
 import { useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
 
 export default function Accounts() {
   const { accounts, loading, error, refetch, deleteAccount, syncAccount, syncAll } = useAccounts();
