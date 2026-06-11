@@ -21,13 +21,13 @@ export default function Sidebar({ onClose }) {
   const { logout, user } = useAuth();
 
   return (
-    <div className="flex flex-col h-full bg-sidebar text-white w-64">
+    <div className="flex flex-col h-full bg-dark-400 text-white w-64 border-r border-white/10">
       {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-5 border-b border-white/10">
-        <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+        <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center">
           <TrendingUp size={18} />
         </div>
-        <span className="font-bold text-lg tracking-tight">InstaAudit</span>
+        <span className="font-extrabold text-lg tracking-tight">InstaAudit</span>
       </div>
 
       {/* Nav */}
@@ -40,8 +40,8 @@ export default function Sidebar({ onClose }) {
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                 isActive
-                  ? 'bg-primary-600 text-white'
-                  : 'text-gray-300 hover:bg-white/10 hover:text-white'
+                  ? 'bg-primary-500 text-white'
+                  : 'text-white/60 hover:bg-white/10 hover:text-white'
               }`
             }
           >
@@ -57,7 +57,7 @@ export default function Sidebar({ onClose }) {
           {user?.avatar_url ? (
             <img src={user.avatar_url} alt={user.name} className="w-8 h-8 rounded-full" />
           ) : (
-            <div className="w-8 h-8 rounded-full bg-primary-600 flex items-center justify-center text-sm font-bold">
+            <div className="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center text-sm font-bold">
               {user?.name?.[0]?.toUpperCase() || 'U'}
             </div>
           )}
