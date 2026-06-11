@@ -143,9 +143,10 @@ async function getMe(req, res) {
 function getInstagramOAuthUrl(req, res) {
   const scopes = [
     'instagram_basic',
-    'instagram_manage_insights',
-    'pages_read_engagement',
+    'instagram_content_publish',
     'pages_show_list',
+    'pages_read_engagement',
+    'public_profile',
   ].join(',');
 
   const url = `https://www.facebook.com/v19.0/dialog/oauth?client_id=${process.env.META_APP_ID}&redirect_uri=${encodeURIComponent(process.env.META_REDIRECT_URI)}&scope=${scopes}&response_type=code&state=${req.user.id}`;
